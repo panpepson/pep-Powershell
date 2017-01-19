@@ -1,0 +1,49 @@
+Get-ExecutionPolicy
+#Set-ExecutionPolicy RemoteSigned
+
+$path = "C:\Users\052372\Desktop\SP-01\Skrypty\grupy-022.csv"
+$csv = Import-csv -path $path
+
+
+$user=$env:username
+
+echo "Linki użytkownika $user --- w --- OneDriver to : `r`n "
+
+
+#$grupa="4logi"
+#$grupa="IN2"
+
+#$grupy=@()
+
+#param([string]$grupy)
+
+$grupy = Get-ADPrincipalGroupMembership $user | select name 
+
+
+foreach ($gr in $csv)
+{
+    $grupa = $gr[0].new_name
+
+      foreach($line in $grupy.name) {
+
+#echo $line+','   #= $line.grupa
+
+    if($line -eq $grupa) { 
+    ($a1,$a2) = [regex]::Split($grupa,'-',2) 
+    $link="https://fikolek.pl/sites/"+$a1.trim()+"/"+$a2.trim(); 
+    echo $link;  
+        
+
+    <#
+    Set-Content "C:\Users\052372\Desktop\SP-01\Skrypty\link.txt" $link
+      link >>  "C:\Users\052372\Desktop\SP-01\Skrypty\link.txt"
+    #>
+
+    continue
+    
+    }
+    
+
+    }
+    
+ }
